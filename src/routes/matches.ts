@@ -46,7 +46,7 @@ matchRouter.post('/', async (req: Request, res: Response) => {
   }
 
   try {
-    const match = await db
+    const [match] = await db
       .insert(matches)
       .values({
         ...data,
@@ -57,6 +57,11 @@ matchRouter.post('/', async (req: Request, res: Response) => {
         awayScore: awayScore ?? 0,
       })
       .returning()
+
+    //if there's match created the broadcast will happen in which we share the match with every connected client
+    if (req.app.locals.broadcastMatchCreated) {
+      req.app.locals.broadcastMatchCreated(match)
+    }
 
     res.status(201).json({ data: match })
   } catch (e) {
