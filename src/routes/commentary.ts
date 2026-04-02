@@ -4,7 +4,7 @@ import { db } from "../db/db";
 import { commentary } from "../db/schema";
 import { desc, eq } from "drizzle-orm";
 
-export const commentaryRouter = Router()
+export const commentaryRouter = Router({ mergeParams: true })
 
 const MAX_LIMIT = 100;
 
@@ -58,6 +58,9 @@ commentaryRouter.post('/', async (req, res) => {
         matchId: paramsResult.data.id,
         ...rest
       }).returning()
+
+    const broadcastCommentary = req.app.locals.broadcastCommentary
+    broadcastCommentary && broadcastCommentary(matchCommentary?.matchId, matchCommentary)
 
     res.status(201).json({ data: matchCommentary })
   } catch (err) {

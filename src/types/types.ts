@@ -1,7 +1,9 @@
 import 'ws'
+import type { Commentary, Match } from '../db/schema';
 declare module 'ws' {
   interface WebSocket {
     isAlive: boolean;
+    subscriptions: Set<number>;
   }
 }
 
@@ -11,11 +13,18 @@ export enum MATCH_STATUS {
   LIVE = 'live'
 }
 
-type PayloadType = 'welcome' | 'match_created'
+// type PayloadType = 'welcome' | 'match_created' | 'error' | 'subscribe' | 'unsubscribe' | 'commentary'
 
-//Will write the structure of this sending payload to a socket/client
-export interface Payload {
-  type: PayloadType,
-  data?: string
-}
+export type Payload = { type: 'welcome' }
+  | { type: 'error', message: string }
+  | { type: 'match_created', data: Match }
+  | { type: 'subscribe', matchId: number }
+  | { type: 'unsubscribe', matchId: number }
+  | { type: 'commentary', matchId: number, data: Commentary }
+
+// export interface Payload {
+//   type: PayloadType,
+//   matchId?: number,
+//   data?: string
+// }
 

@@ -12,8 +12,9 @@ const server = http.createServer(app)
 
 app.use(express.json())
 
-const broadcastMatchCreated = attachWebSocketServer(server)
+const { broadcastMatchCreated, broadcastCommentary } = attachWebSocketServer(server)
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 app.use('/matches', matchRouter)
 app.use('/matches/:id/commentary', commentaryRouter)
