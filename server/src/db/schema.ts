@@ -47,10 +47,10 @@ export const commentary = pgTable('commentary', {
 //   }),
 // }));
 //
-// /**
-//  * TYPES
-//  */
-// export type Match = typeof matches.$inferSelect;
+/**
+ * TYPES
+ */
+export type Match = typeof matches.$inferSelect;
+export type Commentary = typeof commentary.$inferSelect;
 // export type NewMatch = typeof matches.$inferInsert;
-// export type Commentary = typeof commentary.$inferSelect;
 // export type NewCommentary = typeof commentary.$inferInsert;
